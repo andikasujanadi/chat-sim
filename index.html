@@ -1,49 +1,101 @@
 <!doctype html>
-<html class="h-full w-full">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/misans@4.0.0/lib/Normal/MiSans-Medium.min.css" />
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/misans@4.0.0/lib/Normal/MiSans-Bold.min.css" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="./dom-to-image.js"></script>
+    <style type="text/tailwindcss">
+        #phone{
+            font-family: 'misans';
+        }
+    </style>
 </head>
 
-<body class="h-full w-full">
-    <div class="flex flex-col h-full w-full divide-y">
-        <div class="flex justify-center items-center w-full h-14 min-h-14">
-            <div class="text-md font-semibold">Navbar</div>
-        </div>
-        <div class="grow flex h-[calc(100vh - 3.5rem)] w-full divide-x overflow-hidden">
-            <div class="divide-y w-60 min-w-60">
-                <div class="p-2 hover:bg-slate-50 cursor-pointer select-none">menu bar</div>
-                <div class="p-2 hover:bg-slate-50 cursor-pointer select-none">menu bar</div>
-                <div class="p-2 hover:bg-slate-50 cursor-pointer select-none">menu bar</div>
-            </div>
-            <div style="scrollbar-gutter: stable both-edges;scrollbar-width: thin;" class="relative w-full flex flex-col items-center items-start gap-2 overflow-auto p-4">
-                <div id="screen" class="flex flex-col w-96 aspect-[9/16] max-w-full max-h-full bg-green-200 border">
-                    <div id="screenNotificationBar" class="h-[24px] bg-green-600 text-white">
-                        10:05 100%
-                    </div>
-                    <div id="screenHeadBar" class="h-[56px] bg-black text-white bg-green-500">
-                        TopBar
-                    </div>
-                    <div id="screenBody" class="grow bg-white">
-                        hehe
+<body class="">
+    <button onclick="downloadChat()" class="mt-4 px-2 py-1 bg-blue-500 text-white rounded cursor-pointer">
+        Download Chat as Image
+    </button>
+    <div class="border h-[512px]">
+        <div class="scale-20 origin-top-left">
+            <div id="phone" class="flex flex-col aspect-9/18 w-[1220px]">
+                <div class="bg-blue-100">
+                    <div class="h-[21px]"></div>
+                    <div class="h-[67px] flex items-center px-[48px] justify-between">
+                        <div class="">
+                            <div class="text-[32px] font-medium">09:18</div>
+                        </div>
+                        <div class="flex items-center gap-[2px]">
+                            <div class="w-[70px] h-[32px] border border-[3px] rounded-[10px] p-[3px]">
+                                <div class="h-full w-full bg-black rounded-[4px]"></div>
+                            </div>
+                            <div class="h-[12px] w-[3px] rounded-[2px] bg-black"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="flex justify-center max-w-96 gap-1 p-1.5 bg-blue-50 rounded-full">
-                    <div class="rounded-full bg-blue-600 hover:bg-blue-600 borderr border-blue-600 text-white font-semibold p-1 px-3 cursor-pointer select-none">You</div>
-                    <div class="rounded-full bg-blue-50 hover:bg-blue-600 borderr border-blue-50 text-blue-600 hover:text-white font-semibold p-1 px-3 cursor-pointer select-none">Person 1</div>
+                <div
+                    class="text-[56px] bg-blue-100 h-[167px] border-b border-black/10 flex gap-[12px] items-center px-[24px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="72px" viewBox="0 -960 960 960" width="72px"
+                        fill="#1f1f1f">
+                        <path
+                            d="m300.39-438.48 238.52 239.09-58.34 58.22-339.4-339.4 339.26-338.82 58.92 58.78-238.96 238.96h519v83.17h-519Z" />
+                    </svg>
+                    <div class="h-[106px] w-[106px] rounded-full overflow-hidden">
+                        <img class="h-full w-full object-cover"
+                            src="https://cdn-useast1.kapwing.com/static/templates/crying-cat-meme-template-full-719a53dc.webp"
+                            alt="" srcset="">
+                    </div>
+                    <div class="ms-[12px]">Iwan</div>
+                    <div class="flex ms-auto">
+                        <svg class="ms-0" xmlns="http://www.w3.org/2000/svg" height="72px" viewBox="0 -960 960 960"
+                            width="72px" fill="#1f1f1f">
+                            <path
+                                d="M142.3-141.04q-33.5 0-58.33-25.24-24.84-25.23-24.84-57.94v-511.56q0-32.95 24.84-58.34 24.83-25.4 58.33-25.4h511q33.74 0 58.74 25.4 25 25.39 25 58.34v208l164.39-164.39v424.34L737.04-432.22v208q0 32.71-25 57.94-25 25.24-58.74 25.24h-511Zm0-83.18h511v-511.56h-511v511.56Zm0 0v-511.56 511.56Z" />
+                        </svg>
+                        <svg class="ms-[64px]" xmlns="http://www.w3.org/2000/svg" height="72px" viewBox="0 -960 960 960"
+                            width="72px" fill="#1f1f1f">
+                            <path
+                                d="M800.84-101.17q-122.37 0-247.15-58T323.33-322.26Q217.74-427.35 159.46-553.19q-58.29-125.85-58.29-247.15 0-25.37 16.68-42.21t41.89-16.84h145.43q24 0 39.68 13.67 15.67 13.68 20.8 37.72l27.8 120.86q1.64 20.71-2.56 37.66-4.19 16.95-15.51 27.4l-102.64 98.99q21.74 38.61 49.33 73.29 27.58 34.67 60.32 65.84 34.31 36.87 70.7 64.33t74.43 48.19l100.74-101.17q12.96-14.52 30.13-19.72 17.18-5.19 35.61-.93l114.13 25.91q23.11 6.83 37.19 23.39 14.07 16.57 14.07 39.96v144.26q0 25.53-16.88 42.05-16.88 16.52-41.67 16.52ZM231.09-598l79.26-76.87-22.4-100.78h-101.6q1.43 39.04 10.78 81.66 9.34 42.62 33.96 95.99ZM605-228.65q36.74 17.43 81.83 28.87 45.08 11.43 88.82 14.43v-.06.06-103.46l-94.52-20.97L605-228.65ZM231.09-598ZM605-228.65Z" />
+                        </svg>
+                        <svg class="ms-[48px]" xmlns="http://www.w3.org/2000/svg" height="72px" viewBox="0 -960 960 960"
+                            width="72px" fill="#1f1f1f">
+                            <path
+                                d="M480.46-119.67q-30.46 0-51.13-21.01-20.66-21.01-20.66-50.52 0-29.43 20.61-51.28 20.6-21.85 50.26-21.85 30.46 0 51.13 21.78 20.66 21.78 20.66 51.16 0 29.39-20.56 50.56-20.55 21.16-50.31 21.16Zm0-289q-30.46 0-51.13-20.61-20.66-20.6-20.66-50.26 0-30.46 20.61-51.13 20.6-20.66 50.26-20.66 30.46 0 51.13 20.56 20.66 20.55 20.66 50.31 0 30.46-20.56 51.13-20.55 20.66-50.31 20.66Zm0-287q-30.46 0-51.13-21.49-20.66-21.49-20.66-51.66 0-30.18 20.61-51.18 20.6-21 50.26-21 30.46 0 51.13 21.06 20.66 21.05 20.66 51.02 0 30.38-20.56 51.82-20.55 21.43-50.31 21.43Z" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="flex w-96">
-                    <input class="rounded-l-full grow border p-1 px-2 ps-3 rounded-none focus:outline-none focus:border-blue-600" type="text" placeholder="message">
-                    <div class="rounded-r-full bg-blue-600 hover:bg-blue-700 text-white p-2 pe-3 cursor-pointer select-none">send</div>
+                <div class="flex-grow">
+                    yeah
                 </div>
-            </div>
-            <div class="divide-y w-60 min-w-60">
-                <div class="p-2 hover:bg-slate-50 cursor-pointer select-none">menu bar</div>
+                <div class="h-[48px] w-full bg-black flex items-center justify-center">
+                    <div class="h-[12px] w-[456px] bg-white rounded-full"></div>
+                </div>
             </div>
         </div>
     </div>
+    <div id="output"></div>
+    <script>
+        function downloadChat() {
+            var node = document.getElementById('phone');
+
+            domtoimage.toPng(node)
+                .then(function (dataUrl) {
+                    var img = new Image();
+                    img.src = dataUrl;
+                    const outputContainer = document.getElementById('output');
+                    outputContainer.innerHTML = '';
+                    outputContainer.appendChild(img);
+                })
+                .catch(function (error) {
+                    console.error('oops, something went wrong!', error);
+                });
+        }
+    </script>
 </body>
 
 </html>
