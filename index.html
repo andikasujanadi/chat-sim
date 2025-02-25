@@ -14,15 +14,15 @@
         #phone{
             font-family: 'misans';
         }
+        .button{
+            @apply px-2 py-1 rounded cursor-pointer border bg-white text-black border-neutral-300;
+        }
     </style>
 </head>
 
-<body class="">
-    <button onclick="downloadChat()" class="mt-4 px-2 py-1 bg-blue-500 text-white rounded cursor-pointer">
-        Download Chat as Image
-    </button>
-    <div class="border h-[512px]">
-        <div class="scale-20 origin-top-left">
+<body class="flex items-start gap-1">
+    <div class="border h-screen overflow-hidden">
+        <div id="phone-container" class="origin-top-left">
             <div id="phone" class="flex flex-col aspect-9/18 w-[1220px]">
                 <div class="bg-blue-100">
                     <div class="h-[21px]"></div>
@@ -78,23 +78,59 @@
             </div>
         </div>
     </div>
-    <div id="output"></div>
+    <div id="output" class="h-screen hidden"></div>
+    <button onclick="downloadChat()" class="button">
+        Download Chat as Image
+    </button>
     <script>
+        function downloadBase64Image(base64String, filename="chat.png") {
+            const byteCharacters = atob(base64String.split(',')[1]);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/png' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
         function downloadChat() {
             var node = document.getElementById('phone');
-
             domtoimage.toPng(node)
                 .then(function (dataUrl) {
                     var img = new Image();
+                    var imgElement;
                     img.src = dataUrl;
                     const outputContainer = document.getElementById('output');
                     outputContainer.innerHTML = '';
                     outputContainer.appendChild(img);
+                    imgElement = outputContainer.querySelector('img');
+                    imgElement.classList.add('h-screen');
+                    imgElement.classList.add('border');
+                    downloadBase64Image(dataUrl);
                 })
                 .catch(function (error) {
                     console.error('oops, something went wrong!', error);
                 });
         }
+        function resizePhone() {
+            const phoneContainer = document.getElementById('phone-container');
+            let phoneHeight = document.getElementById('phone').offsetHeight;
+            let phoneWidth = document.getElementById('phone').offsetWidth;
+            let windowHeight = window.innerHeight;
+            let windowWidth = window.innerHeight;
+            let heightRatio = window.innerHeight / phoneHeight;
+            let widthRatio = phoneWidth * heightRatio;
+            phoneContainer.style.transform = `scale(${heightRatio})`;
+            phoneContainer.style.width = widthRatio + "px";
+        }
+        resizePhone();
     </script>
 </body>
 
