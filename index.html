@@ -14,8 +14,11 @@
         #phone{
             font-family: 'misans';
         }
-        .button{
-            @apply px-3 py-2 font-medium rounded-xl cursor-pointer bg-gray-100 text-black;
+        .btn{
+            @apply px-3 py-2 font-medium rounded-xl cursor-pointer bg-gray-100 text-black flex gap-1 items-center;
+        }
+        .btn-sm{
+            @apply cursor-pointer p-1 rounded-lg bg-neutral-100 text-black;
         }
         .disabled{
             @apply opacity-50 pointer-events-none;
@@ -91,7 +94,7 @@
         </div>
     </div>
     <div id="output" class="h-screen hidden"></div>
-    <div class="p-4 grow h-screen flex  gap-4">
+    <div class="p-4 grow h-screen flex gap-4">
         <div class="flex flex-col bg-white p-4 rounded-2xl h-full grow gap-4">
             <div class="flex gap-4 items-center">
                 <div class="h-9 w-9 rounded-full overflow-hidden">
@@ -99,22 +102,44 @@
                         src="https://cdn-useast1.kapwing.com/static/templates/crying-cat-meme-template-full-719a53dc.webp"
                         alt="" srcset="">
                 </div>
-                <div class="text-2xl font-medium">Iwan</div>
+                <div class="sm:text-2xl font-medium">Iwan</div>
+                <div class="flex ms-auto gap-1">
+                    <div class="btn-sm lg:hidden disabled">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-device-mobile">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14z" />
+                            <path d="M11 4h2" />
+                            <path d="M12 17v.01" />
+                        </svg>
+                    </div>
+                    <div class="btn-sm sm:hidden disabled">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-settings">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                        </svg>
+                    </div>
+                </div>
             </div>
             <div id="chat-container" style="scrollbar-width:thin;scrollbar-color: #adadad transparent;"
                 class="grow flex flex-col gap-2 items-start overflow-auto">
 
             </div>
-            <div class="flex gap-2 items-end">
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-end">
                 <textarea id="text-input" class="form-input grow" rows="3"
                     placeholder="Type your message..."></textarea>
                 <div class="flex flex-col gap-2">
-                    <div onclick="addChat(0)" class="button">Send</div>
-                    <div onclick="addChat()" class="button !bg-blue-600 !text-white">Send</div>
+                    <div onclick="addChat(0)" class="btn text-center">Send</div>
+                    <div onclick="addChat()" class="btn text-center !bg-blue-600 !text-white">Send</div>
                 </div>
             </div>
         </div>
-        <div class="flex flex-col h-full gap-4">
+        <div id="sidebar" class="flex flex-col h-full gap-4 hidden sm:flex shrink-0 min-w-60">
             <div class="bg-white rounded-2xl flex flex-col items-center p-4 gap-2">
                 <div class="h-20 w-20 rounded-full overflow-hidden">
                     <img class="h-full w-full object-cover"
@@ -122,16 +147,16 @@
                         alt="" srcset="">
                 </div>
                 <div class="text-lg font-medium">Iwan</div>
-                <div class="flex gap-2">
-                    <button class="button">
-                        Edit Photo
+                <div class="flex gap-2 w-full">
+                    <button class="w-full btn disabled">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="mx-auto icon icon-tabler icons-tabler-outline icon-tabler-photo-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M11 20h-4a3 3 0 0 1 -3 -3v-10a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v4" /><path d="M4 15l4 -4c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.31 -.298 .644 -.497 .987 -.596" /><path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z" /></svg>
                     </button>
-                    <button class="button">
-                        Edit Name
+                    <button class="w-full btn disabled">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="mx-auto icon icon-tabler icons-tabler-outline icon-tabler-edit-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" /><path d="M16 5l3 3" /><path d="M9 7.07a7 7 0 0 0 1 13.93a7 7 0 0 0 6.929 -6" /></svg>
                     </button>
                 </div>
             </div>
-            <div class="bg-white rounded-2xl flex flex-col p-4 gap-2 disabled">
+            <div class="bg-white rounded-2xl flex flex-col p-4 gap-2 disabled hidden">
                 <div class="font-medium">Members</div>
                 <div class="flex gap-2 items-center">
                     <div class="h-8 w-8 rounded-full overflow-hidden">
@@ -141,14 +166,19 @@
                     </div>
                     <div class="font-medium">Iwan</div>
                 </div>
-                <button class="button">
+                <button class="btn">
                     Add
                 </button>
             </div>
             <div class="bg-white rounded-2xl flex flex-col p-4 gap-2 grow">
                 <div class="font-medium">Action and Stuff</div>
-                <button onclick="downloadChat()" class="button">
-                    Download Chat as Image
+                <button onclick="downloadChat()" class="btn text-left disabled">
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="18"  height="18"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-message-reply"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" /><path d="M11 8l-3 3l3 3" /><path d="M16 11h-8" /></svg>
+                    Render Chat
+                </button>
+                <button onclick="downloadChat()" class="btn text-left">
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="18"  height="18"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-message-down"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 9h8" /><path d="M8 13h6" /><path d="M11.998 18.601l-3.998 2.399v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v5.5" /><path d="M19 16v6" /><path d="M22 19l-3 3l-3 -3" /></svg>
+                    Download
                 </button>
             </div>
         </div>
@@ -194,68 +224,68 @@
             container.innerHTML = '';
 
             chats.forEach(([sender, message], index) => {
-            const chatBubble = document.createElement('div');
-            chatBubble.className = `chat-bubble ${sender === -1 ? 'self-bubble' : ''}`;
-            
-            const messageText = document.createElement('span');
-            messageText.textContent = message;
+                const chatBubble = document.createElement('div');
+                chatBubble.className = `chat-bubble ${sender === -1 ? 'self-bubble' : ''}`;
 
-            const tempDivDelete = document.createElement('span');
-            tempDivDelete.innerHTML = deleteIcon;
-            const deleteSvgIcon = tempDivDelete.firstElementChild;
-            const deleteBtn = document.createElement('span');
-            deleteBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
-            deleteBtn.appendChild(deleteSvgIcon);
-            deleteBtn.onclick = () => deleteChat(index);
+                const messageText = document.createElement('span');
+                messageText.textContent = message;
 
-            const tempDivMove = document.createElement('span');
-            tempDivMove.innerHTML = moveIcon;
-            const moveSvgIcon = tempDivMove.firstElementChild;
-            const moveBtn = document.createElement('span');
-            moveBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
-            moveBtn.appendChild(moveSvgIcon);
-            moveBtn.onclick = () => {
-                chats[index][0] = sender === -1 ? 0 : -1;
-                renderChat();
-            };
+                const tempDivDelete = document.createElement('span');
+                tempDivDelete.innerHTML = deleteIcon;
+                const deleteSvgIcon = tempDivDelete.firstElementChild;
+                const deleteBtn = document.createElement('span');
+                deleteBtn.className = 'btn-sm';
+                deleteBtn.appendChild(deleteSvgIcon);
+                deleteBtn.onclick = () => deleteChat(index);
 
-            const tempDivUp = document.createElement('span');
-            tempDivUp.innerHTML = upIcon;
-            const upSvgIcon = tempDivUp.firstElementChild;
-            const upBtn = document.createElement('span');
-            upBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
-            upBtn.appendChild(upSvgIcon);
-            upBtn.onclick = () => {
-                if (index > 0) {
-                    [chats[index], chats[index - 1]] = [chats[index - 1], chats[index]];
+                const tempDivMove = document.createElement('span');
+                tempDivMove.innerHTML = moveIcon;
+                const moveSvgIcon = tempDivMove.firstElementChild;
+                const moveBtn = document.createElement('span');
+                moveBtn.className = 'btn-sm';
+                moveBtn.appendChild(moveSvgIcon);
+                moveBtn.onclick = () => {
+                    chats[index][0] = sender === -1 ? 0 : -1;
                     renderChat();
-                }
-            };
+                };
 
-            const tempDivDown = document.createElement('span');
-            tempDivDown.innerHTML = downIcon;
-            const downSvgIcon = tempDivDown.firstElementChild;
-            const downBtn = document.createElement('span');
-            downBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
-            downBtn.appendChild(downSvgIcon);
-            downBtn.onclick = () => {
-                if (index < chats.length - 1) {
-                    [chats[index], chats[index + 1]] = [chats[index + 1], chats[index]];
-                    renderChat();
-                }
-            };
+                const tempDivUp = document.createElement('span');
+                tempDivUp.innerHTML = upIcon;
+                const upSvgIcon = tempDivUp.firstElementChild;
+                const upBtn = document.createElement('span');
+                upBtn.className = 'btn-sm';
+                upBtn.appendChild(upSvgIcon);
+                upBtn.onclick = () => {
+                    if (index > 0) {
+                        [chats[index], chats[index - 1]] = [chats[index - 1], chats[index]];
+                        renderChat();
+                    }
+                };
 
-            const buttonContainer = document.createElement('div');
-            buttonContainer.className = 'flex justify-end mt-2 gap-1';
-            buttonContainer.appendChild(upBtn);
-            buttonContainer.appendChild(downBtn);
-            buttonContainer.appendChild(moveBtn);
-            buttonContainer.appendChild(deleteBtn);
+                const tempDivDown = document.createElement('span');
+                tempDivDown.innerHTML = downIcon;
+                const downSvgIcon = tempDivDown.firstElementChild;
+                const downBtn = document.createElement('span');
+                downBtn.className = 'btn-sm';
+                downBtn.appendChild(downSvgIcon);
+                downBtn.onclick = () => {
+                    if (index < chats.length - 1) {
+                        [chats[index], chats[index + 1]] = [chats[index + 1], chats[index]];
+                        renderChat();
+                    }
+                };
 
-            chatBubble.appendChild(messageText);
-            chatBubble.appendChild(buttonContainer);
-            container.appendChild(chatBubble);
-        });
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'flex justify-end mt-2 gap-1';
+                buttonContainer.appendChild(upBtn);
+                buttonContainer.appendChild(downBtn);
+                buttonContainer.appendChild(moveBtn);
+                buttonContainer.appendChild(deleteBtn);
+
+                chatBubble.appendChild(messageText);
+                chatBubble.appendChild(buttonContainer);
+                container.appendChild(chatBubble);
+            });
         }
 
         renderChat();
