@@ -15,13 +15,25 @@
             font-family: 'misans';
         }
         .button{
-            @apply px-2 py-1 rounded cursor-pointer border bg-white text-black border-neutral-300;
+            @apply px-3 py-2 font-medium rounded-xl cursor-pointer bg-gray-100 text-black;
+        }
+        .disabled{
+            @apply opacity-50 pointer-events-none;
+        }
+        .form-input{
+            @apply border p-2 rounded-xl outline-none border-neutral-200;
+        }
+        .chat-bubble{
+            @apply border p-4 rounded-2xl font-medium border-neutral-200 max-w-96;
+        }
+        .self-bubble{
+            @apply ms-auto bg-blue-600 text-white;
         }
     </style>
 </head>
 
-<body class="flex items-start gap-1">
-    <div class="border h-screen overflow-hidden">
+<body class="flex items-start gap-1 bg-stone-200">
+    <div class="h-screen overflow-hidden shrink-0 hidden lg:block">
         <div id="phone-container" class="origin-top-left">
             <div id="phone" class="flex flex-col aspect-9/18 w-[1220px]">
                 <div class="bg-blue-100">
@@ -69,7 +81,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="flex-grow">
+                <div class="flex-grow bg-white">
                     yeah
                 </div>
                 <div class="h-[48px] w-full bg-black flex items-center justify-center">
@@ -79,11 +91,177 @@
         </div>
     </div>
     <div id="output" class="h-screen hidden"></div>
-    <button onclick="downloadChat()" class="button">
-        Download Chat as Image
-    </button>
+    <div class="p-4 grow h-screen flex  gap-4">
+        <div class="flex flex-col bg-white p-4 rounded-2xl h-full grow gap-4">
+            <div class="flex gap-4 items-center">
+                <div class="h-9 w-9 rounded-full overflow-hidden">
+                    <img class="h-full w-full object-cover"
+                        src="https://cdn-useast1.kapwing.com/static/templates/crying-cat-meme-template-full-719a53dc.webp"
+                        alt="" srcset="">
+                </div>
+                <div class="text-2xl font-medium">Iwan</div>
+            </div>
+            <div id="chat-container" style="scrollbar-width:thin;scrollbar-color: #adadad transparent;"
+                class="grow flex flex-col gap-2 items-start overflow-auto">
+
+            </div>
+            <div class="flex gap-2 items-end">
+                <textarea id="text-input" class="form-input grow" rows="3"
+                    placeholder="Type your message..."></textarea>
+                <div class="flex flex-col gap-2">
+                    <div onclick="addChat(0)" class="button">Send</div>
+                    <div onclick="addChat()" class="button !bg-blue-600 !text-white">Send</div>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col h-full gap-4">
+            <div class="bg-white rounded-2xl flex flex-col items-center p-4 gap-2">
+                <div class="h-20 w-20 rounded-full overflow-hidden">
+                    <img class="h-full w-full object-cover"
+                        src="https://cdn-useast1.kapwing.com/static/templates/crying-cat-meme-template-full-719a53dc.webp"
+                        alt="" srcset="">
+                </div>
+                <div class="text-lg font-medium">Iwan</div>
+                <div class="flex gap-2">
+                    <button class="button">
+                        Edit Photo
+                    </button>
+                    <button class="button">
+                        Edit Name
+                    </button>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl flex flex-col p-4 gap-2 disabled">
+                <div class="font-medium">Members</div>
+                <div class="flex gap-2 items-center">
+                    <div class="h-8 w-8 rounded-full overflow-hidden">
+                        <img class="h-full w-full object-cover"
+                            src="https://cdn-useast1.kapwing.com/static/templates/crying-cat-meme-template-full-719a53dc.webp"
+                            alt="" srcset="">
+                    </div>
+                    <div class="font-medium">Iwan</div>
+                </div>
+                <button class="button">
+                    Add
+                </button>
+            </div>
+            <div class="bg-white rounded-2xl flex flex-col p-4 gap-2 grow">
+                <div class="font-medium">Action and Stuff</div>
+                <button onclick="downloadChat()" class="button">
+                    Download Chat as Image
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
-        function downloadBase64Image(base64String, filename="chat.png") {
+        const deleteIcon = `
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+        `;
+        const moveIcon = `
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-arrows-left-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 17l-18 0" /><path d="M6 10l-3 -3l3 -3" /><path d="M3 7l18 0" /><path d="M18 20l3 -3l-3 -3" /></svg>
+        `;
+        const upIcon = `
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M18 11l-6 -6" /><path d="M6 11l6 -6" /></svg>
+        `;
+        const downIcon = `
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M18 13l-6 6" /><path d="M6 13l6 6" /></svg>
+        `;
+        const persons = ['Iwan', 'iklabib'];
+        const chats = [
+            [0, 'yeah?'],
+            [-1, 'oh yeah'],
+            [0, 'yeah!!'],
+            [-1, 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'],
+        ];
+
+        function addChat(from = -1) {
+            const textInput = document.getElementById('text-input');
+            const message = textInput.value.trim();
+            if (!message) return;
+
+            chats.push([from, message]);
+            textInput.value = '';
+            renderChat();
+        }
+
+        function deleteChat(index) {
+            chats.splice(index, 1);
+            renderChat();
+        }
+
+        function renderChat() {
+            const container = document.getElementById('chat-container');
+            container.innerHTML = '';
+
+            chats.forEach(([sender, message], index) => {
+            const chatBubble = document.createElement('div');
+            chatBubble.className = `chat-bubble ${sender === -1 ? 'self-bubble' : ''}`;
+            
+            const messageText = document.createElement('span');
+            messageText.textContent = message;
+
+            const tempDivDelete = document.createElement('span');
+            tempDivDelete.innerHTML = deleteIcon;
+            const deleteSvgIcon = tempDivDelete.firstElementChild;
+            const deleteBtn = document.createElement('span');
+            deleteBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
+            deleteBtn.appendChild(deleteSvgIcon);
+            deleteBtn.onclick = () => deleteChat(index);
+
+            const tempDivMove = document.createElement('span');
+            tempDivMove.innerHTML = moveIcon;
+            const moveSvgIcon = tempDivMove.firstElementChild;
+            const moveBtn = document.createElement('span');
+            moveBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
+            moveBtn.appendChild(moveSvgIcon);
+            moveBtn.onclick = () => {
+                chats[index][0] = sender === -1 ? 0 : -1;
+                renderChat();
+            };
+
+            const tempDivUp = document.createElement('span');
+            tempDivUp.innerHTML = upIcon;
+            const upSvgIcon = tempDivUp.firstElementChild;
+            const upBtn = document.createElement('span');
+            upBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
+            upBtn.appendChild(upSvgIcon);
+            upBtn.onclick = () => {
+                if (index > 0) {
+                    [chats[index], chats[index - 1]] = [chats[index - 1], chats[index]];
+                    renderChat();
+                }
+            };
+
+            const tempDivDown = document.createElement('span');
+            tempDivDown.innerHTML = downIcon;
+            const downSvgIcon = tempDivDown.firstElementChild;
+            const downBtn = document.createElement('span');
+            downBtn.className = 'cursor-pointer p-1 rounded-lg border bg-neutral-100 text-black border-neutral-300';
+            downBtn.appendChild(downSvgIcon);
+            downBtn.onclick = () => {
+                if (index < chats.length - 1) {
+                    [chats[index], chats[index + 1]] = [chats[index + 1], chats[index]];
+                    renderChat();
+                }
+            };
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'flex justify-end mt-2 gap-1';
+            buttonContainer.appendChild(upBtn);
+            buttonContainer.appendChild(downBtn);
+            buttonContainer.appendChild(moveBtn);
+            buttonContainer.appendChild(deleteBtn);
+
+            chatBubble.appendChild(messageText);
+            chatBubble.appendChild(buttonContainer);
+            container.appendChild(chatBubble);
+        });
+        }
+
+        renderChat();
+
+
+        function downloadBase64Image(base64String, filename = "chat.png") {
             const byteCharacters = atob(base64String.split(',')[1]);
             const byteNumbers = new Array(byteCharacters.length);
             for (let i = 0; i < byteCharacters.length; i++) {
@@ -99,7 +277,6 @@
             document.body.removeChild(link);
         }
 
-
         function downloadChat() {
             var node = document.getElementById('phone');
             domtoimage.toPng(node)
@@ -112,7 +289,6 @@
                     outputContainer.appendChild(img);
                     imgElement = outputContainer.querySelector('img');
                     imgElement.classList.add('h-screen');
-                    imgElement.classList.add('border');
                     downloadBase64Image(dataUrl);
                 })
                 .catch(function (error) {
@@ -131,6 +307,15 @@
             phoneContainer.style.width = widthRatio + "px";
         }
         resizePhone();
+
+        function debounce(func, delay) {
+            let timer;
+            return function () {
+                clearTimeout(timer);
+                timer = setTimeout(func, delay);
+            };
+        }
+        window.addEventListener("resize", debounce(resizePhone, 100));
     </script>
 </body>
 
